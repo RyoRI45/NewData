@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="home-container">
+    <h2>Welcome to Learning Support</h2>
+    <p>あなたの学習をサポートするアプリです。</p>
+    <form method="GET" action="{% url 'login' %}" style="display: inline;">
+        <button type="submit" class="btn">ログイン</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+[
+    {
+      "model": "core.student",
+      "pk": 1,
+      "fields": {
+        "student_id": "A001",
+        "student_name": "佐藤修太郎",
+        "password": "ac003b001"
+      }
+    },
+    {
+      "model": "core.student",
+      "pk": 2,
+      "fields": {
+        "student_id": "A002",
+        "student_name": "土屋大臣",
+        "password": "rj011s314"
+      }
+    },
+    {
+      "model": "core.student",
+      "pk": 3,
+      "fields": {
+        "student_id": "A003",
+        "student_name": "松浦徳弥",
+        "password": "sn353v487"
+      }
+    },
+    {
+      "model": "core.student",
+      "pk": 4,
+      "fields": {
+        "student_id": "A004",
+        "student_name": "帝塚健太",
+        "password": "eg463g215"
+      }
+    },
+  {
+      "model": "core.student",
+      "pk": 5,
+      "fields": {
+        "student_id": "A005",
+        "student_name": "森本雄大",
+        "password": "nr209f311"
+      }
+    }
+  ]
+  

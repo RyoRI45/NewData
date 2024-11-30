@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Learning Support{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Learning Support</h1>
+        <!-- ログアウトフォーム -->
+        <div>
+            <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit">ログアウト</button>
+            </form>
+        </div>
+    </header>
+    <div class="container">
+        {% block content %}
+        <!-- 各ページの内容 -->
+        {% endblock %}
+    </div>
+    <footer>
+        <p>&copy; 2024 Learning Support</p>
+    </footer>
+</body>
+</html>

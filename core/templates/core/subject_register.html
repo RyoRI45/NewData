@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="subject-register">
+    <h2>科目登録</h2>
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="subject_class">科目分類:</label>
+        <select id="subject_class" name="subject_class">
+            <option value="必修">必修</option>
+            <option value="教養">教養</option>
+            <option value="専門">専門</option>
+        </select>
+        <label for="subject_name">科目名:</label>
+        <select id="subject_name" name="subject_name">
+            <option value="科目A1">科目A1</option>
+            <option value="科目A2">科目A2</option>
+            <option value="科目A3">科目A3</option>
+            <option value="科目B1">科目B1</option>
+            <option value="科目B2">科目B2</option>
+            <option value="科目B3">科目B3</option>
+            <option value="科目C1">科目C1</option>
+            <option value="科目C2">科目C2</option>
+            <option value="科目C3">科目C3</option>
+        </select>
+        <button type="submit" class="btn">登録</button>
+    </form>
+</div>
+{% endblock %}

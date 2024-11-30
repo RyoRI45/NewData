@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="manage-grades">
+    <h2>成績管理</h2>
+    <form method="GET" action="{% url 'subject_register' %}" style="display: inline;">
+        <button type="submit" class="btn">科目登録</button>
+    </form>
+    <form method="GET" action="{% url 'grade_view' %}" style="display: inline;">
+        <button type="submit" class="btn">成績閲覧</button>
+    </form>
+</div>
+{% endblock %}

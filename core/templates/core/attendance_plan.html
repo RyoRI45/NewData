@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="attendance-plan">
+    <h2>出席計画</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>科目名</th>
+                <th>授業回数</th>
+                <th>出席日数</th>
+                <th>出席率</th>
+                <th>状況</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in attendance_data %}
+                <tr>
+                    <td>{{ data.subject_name }}</td>
+                    <td>{{ data.lesson_count }}</td>
+                    <td>{{ data.attend_days }}</td>
+                    <td>{{ data.attendance_rate|floatformat:2 }}%</td>
+                    <td>{{ data.status }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

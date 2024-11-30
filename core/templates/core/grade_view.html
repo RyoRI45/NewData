@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="grade-view">
+    <h2>成績閲覧</h2>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>科目名</th>
+                <th>成績</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subject in subjects %}
+                <tr>
+                    <td>{{ subject.subject_name }}</td>
+                    <td>{{ subject.subject_score }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><strong>GPA:</strong> {{ gpa|floatformat:2 }}</p>
+    <p>{{ message }}</p>
+</div>
+{% endblock %}
