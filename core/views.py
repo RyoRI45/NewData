@@ -6,9 +6,14 @@ from django.http import HttpResponseForbidden
 # Create your views here.
 
 def home(request):
+    host = request.get_host()  # ホスト名を取得
+    print(f"Request host: {request.get_host()}")  # ログにホスト名を出力
     return render(request, 'core/home.html')
 
 def login_view(request):
+    host = request.get_host()  # ホスト名を取得
+    print(f"Login page accessed from host: {host}")  # ログにホスト名を出力
+    
     if request.method == 'POST':
         student_name = request.POST['student_name']
         password = request.POST['password']
@@ -21,6 +26,9 @@ def login_view(request):
     return render(request, 'core/login.html')
 
 def logout_view(request):
+    host = request.get_host()  # ホスト名を取得
+    print(f"Logout page accessed from host: {host}")  # ログにホスト名を出力
+    
     if request.method == 'POST':
         logout(request)
         return redirect('login')  # ログインページにリダイレクト
@@ -28,6 +36,9 @@ def logout_view(request):
         return HttpResponseForbidden("Invalid request method")
 
 def student_home(request):
+    host = request.get_host()  # ホスト名を取得
+    print(f"Student home page accessed from host: {host}")  # ログにホスト名を出力
+    
     student_id = request.session.get('student_id')
     if not student_id:
         return redirect('login')
@@ -35,9 +46,14 @@ def student_home(request):
     return render(request, 'core/student_home.html', {'student': student})
 
 def manage_grades(request):
+    host = request.get_host()  # ホスト名を取得
+    print(f"Manage grades page accessed from host: {host}")  # ログにホスト名を出力
     return render(request, 'core/manage_grades.html')
 
 def subject_register(request):
+    host = request.get_host()  # ホスト名を取得
+    print(f"Subject register page accessed from host: {host}")  # ログにホスト名を出力
+    
     if request.method == 'POST':
         student_id = request.session.get('student_id')
         student = Student.objects.get(student_id=student_id)
@@ -84,6 +100,9 @@ def subject_register(request):
     return render(request, 'core/subject_register.html')
 
 def grade_view(request):
+    host = request.get_host()  # ホスト名を取得
+    print(f"Grade view page accessed from host: {host}")  # ログにホスト名を出力
+    
     student_id = request.session.get('student_id')
     student = Student.objects.get(student_id=student_id)
     subjects = Subject.objects.filter(student=student)
@@ -113,6 +132,9 @@ def grade_view(request):
     })
 
 def attendance_plan(request):
+    host = request.get_host()  # ホスト名を取得
+    print(f"Attendance plan page accessed from host: {host}")  # ログにホスト名を出力
+    
     student_id = request.session.get('student_id')
     student = Student.objects.get(student_id=student_id)
     subjects = Subject.objects.filter(student=student)

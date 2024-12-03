@@ -3,10 +3,15 @@
 import os
 import sys
 
+# プロジェクトのルートディレクトリを追加
+# sys.path.append("C:\\Users\\Ryou\\Desktop\\LearningSupportApplication")
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(PROJECT_ROOT)
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'management.settings')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "management.settings")  # 新しい名前に変更
+
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -17,6 +22,5 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
