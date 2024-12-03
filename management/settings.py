@@ -101,8 +101,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = '/home/Ryo45/NewData/static'
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # 例えば、プロジェクトの静的ファイルを置く場所
+]
+# STATIC_ROOT = '/home/Ryo45/NewData/static'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Security settings for production
 CSRF_TRUSTED_ORIGINS = ['https://ryo45.pythonanywhere.com']
