@@ -11,12 +11,14 @@
     <header>
         <h1>Learning Support</h1>
         <!-- ログアウトフォーム -->
+        {% if user.is_authenticated %}
         <div>
             <form method="POST" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit">ログアウト</button>
             </form>
         </div>
+        {% endif %}
     </header>
     <div class="container">
         {% block content %}
