@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login
 from .models import Student, Subject, GPA
 from django.http import HttpResponseForbidden
+from django.contrib import messages
 
 # Create your views here.
 
@@ -20,21 +21,21 @@ def home(request):
 
 def login_view(request):
     if request.method == 'POST':
-        student_name = request.POST['student_name']
-        password = request.POST['password']
-        
-        # Djangoの認証機能を使って認証
+        student_name = request.POST.get('student_name')
+        password = request.POST.get('password')
+
+        # ユーザーをデータベースから取得
         user = authenticate(request, username=student_name, password=password)
-        
+
         if user is not None:
             # 認証成功
             login(request, user)
-            return redirect('student_home')  # ログイン後にリダイレクト
+            return redirect('student_home')  # 成功時にホーム画面にリダイレクト
         else:
             # 認証失敗
-            error = '無効な名前かパスワードです'
-            return render(request, 'core/login.html', {'error': error})
-    
+            messages.error(request, "無効な名前かパスワードです")
+            return redirect('login')  # ログインページに戻る
+
     return render(request, 'core/login.html')
 
 def logout_view(request):
