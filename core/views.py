@@ -33,9 +33,9 @@ def login_view(request):
         else:
             # 認証失敗
             error = '無効な名前かパスワードです'
-            return render(request, 'login.html', {'error': error})
+            return render(request, 'core/login.html', {'error': error})
     
-    return render(request, 'login.html')
+    return render(request, 'core/login.html')
 
 def logout_view(request):
     host = request.get_host()  # ホスト名を取得
