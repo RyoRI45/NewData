@@ -12,5 +12,4 @@ urlpatterns = [
     path('subject_register/', views.subject_register, name='subject_register'),
     path('grade_view/', views.grade_view, name='grade_view'),
     path('attendance_plan/', views.attendance_plan, name='attendance_plan'),
-    # path('invalid-action/', views.invalid_action, name='invalid_action'),
 ]

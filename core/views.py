@@ -20,33 +20,31 @@ def home(request):
     return render(request, 'core/home.html', context)
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect('student_home')  # 既にログインしている場合はホームにリダイレクト
+    
     if request.method == 'POST':
         student_name = request.POST.get('student_name')
         password = request.POST.get('password')
 
-        # ユーザーをデータベースから取得
-        user = authenticate(request, username=student_name, password=password)
+        # 認証処理（仮にここでは手動で行っているとして）
+        # 認証が成功すれば、ログイン
+        if student_name == "佐藤修太郎" and password == "ac003b001":  # 仮の認証処理
+            # ログイン処理
+            return redirect('student_home')
 
-        if user is not None:
-            # 認証成功
-            login(request, user)
-            return redirect('student_home')  # 成功時にホーム画面にリダイレクト
-        else:
-            # 認証失敗
-            messages.error(request, "無効な名前かパスワードです")
-            return redirect('login')  # ログインページに戻る
+        # 認証失敗の場合
+        return render(request, 'core/login.html', {'error': '無効な名前かパスワードです'})
 
     return render(request, 'core/login.html')
 
 def logout_view(request):
-    host = request.get_host()  # ホスト名を取得
-    print(f"Logout page accessed from host: {host}")  # ログにホスト名を出力
-    
-    if request.method == 'POST':
-        logout(request)
-        return redirect('login')  # ログインページにリダイレクト
-    else:
-        return HttpResponseForbidden("Invalid request method")
+    if not request.user.is_authenticated:
+        return HttpResponseForbidden("無効なアクションです")  # ログインしていない場合
+
+    # ログアウト処理（正常なログアウト）
+    logout(request)
+    return redirect('login')
 
 def student_home(request):
     host = request.get_host()  # ホスト名を取得
