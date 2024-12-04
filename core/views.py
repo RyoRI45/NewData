@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
 from .models import Student, Subject, GPA
 from django.http import HttpResponseForbidden
 
@@ -19,19 +19,20 @@ def home(request):
     return render(request, 'core/home.html', context)
 
 def login_view(request):
-    host = request.get_host()  # ホスト名を取得
-    print(f"Login page accessed from host: {host}")  # ログにホスト名を出力
-    
     if request.method == 'POST':
         student_name = request.POST['student_name']
         password = request.POST['password']
-        try:
-            student = Student.objects.get(student_name=student_name, password=password)
-            request.session['student_id'] = student.student_id
-            return redirect('student_home')
-        except Student.DoesNotExist:
-            return render(request, 'core/login.html', {'error': 'ログインに失敗しました'})
-    return render(request, 'core/login.html')
+
+        # 認証
+        user = authenticate(request, username=student_name, password=password)
+
+        if user is not None:
+            login(request, user)  # ログイン処理
+            return redirect('student_home')  # ログイン後に student_home にリダイレクト
+        else:
+            return render(request, 'core/login.html', {'error': '無効な名前かパスワードです。'})
+    else:
+        return render(request, 'core/login.html')
 
 def logout_view(request):
     host = request.get_host()  # ホスト名を取得
