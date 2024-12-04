@@ -18,6 +18,7 @@ def home(request):
     
     return render(request, 'core/home.html', context)
 
+#ログイン
 def login_view(request):
     if request.method == 'POST':
         # フォームから送信されたデータを取得
