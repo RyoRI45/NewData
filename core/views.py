@@ -1,50 +1,39 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth import logout
 from .models import Student, Subject, GPA
 from django.http import HttpResponseForbidden
-from django.contrib import messages
 
 # Create your views here.
-
-from django.shortcuts import render
 
 def home(request):
     host = request.get_host()  # ホスト名を取得
     print(f"Request host: {request.get_host()}")  # ログにホスト名を出力
-    
-    # コンテキストにログイン状態を追加
-    context = {
-        'is_authenticated': request.user.is_authenticated,
-    }
-    
-    return render(request, 'core/home.html', context)
+    return render(request, 'core/home.html')
 
 def login_view(request):
-    if request.user.is_authenticated:
-        return redirect('student_home')  # 既にログインしている場合はホームにリダイレクト
+    host = request.get_host()  # ホスト名を取得
+    print(f"Login page accessed from host: {host}")  # ログにホスト名を出力
     
     if request.method == 'POST':
-        student_name = request.POST.get('student_name')
-        password = request.POST.get('password')
-
-        # 認証処理（仮にここでは手動で行っているとして）
-        # 認証が成功すれば、ログイン
-        if student_name == "佐藤修太郎" and password == "ac003b001":  # 仮の認証処理
-            # ログイン処理
+        student_name = request.POST['student_name']
+        password = request.POST['password']
+        try:
+            student = Student.objects.get(student_name=student_name, password=password)
+            request.session['student_id'] = student.student_id
             return redirect('student_home')
-
-        # 認証失敗の場合
-        return render(request, 'core/login.html', {'error': '無効な名前かパスワードです'})
-
+        except Student.DoesNotExist:
+            return render(request, 'core/login.html', {'error': 'ログインに失敗しました'})
     return render(request, 'core/login.html')
 
 def logout_view(request):
-    if not request.user.is_authenticated:
-        return HttpResponseForbidden("無効なアクションです")  # ログインしていない場合
-
-    # ログアウト処理（正常なログアウト）
-    logout(request)
-    return redirect('login')
+    host = request.get_host()  # ホスト名を取得
+    print(f"Logout page accessed from host: {host}")  # ログにホスト名を出力
+    
+    if request.method == 'POST':
+        logout(request)
+        return redirect('login')  # ログインページにリダイレクト
+    else:
+        return HttpResponseForbidden("Invalid request method")
 
 def student_home(request):
     host = request.get_host()  # ホスト名を取得
