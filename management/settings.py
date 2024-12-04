@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'management.settings.debug_middleware',  # 正しいパスでデバッグミドルウェアを追加
+    'core.middleware.DisableBrowserCacheMiddleware', # カスタムミドルウェアを追加
 ]
 
 ROOT_URLCONF = 'management.urls'
@@ -124,6 +125,10 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGOUT_REDIRECT_URL = 'login'  # ログアウト後のリダイレクト先
+
+# セッション設定
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # ブラウザを閉じたらセッションを無効化
+SESSION_COOKIE_AGE = 0  # セッションを即座に無効化
 
 # Logging
 logger = logging.getLogger(__name__)

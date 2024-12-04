@@ -5,10 +5,18 @@ from django.http import HttpResponseForbidden
 
 # Create your views here.
 
+from django.shortcuts import render
+
 def home(request):
     host = request.get_host()  # ホスト名を取得
     print(f"Request host: {request.get_host()}")  # ログにホスト名を出力
-    return render(request, 'core/home.html')
+    
+    # コンテキストにログイン状態を追加
+    context = {
+        'is_authenticated': request.user.is_authenticated,
+    }
+    
+    return render(request, 'core/home.html', context)
 
 def login_view(request):
     host = request.get_host()  # ホスト名を取得
@@ -26,14 +34,9 @@ def login_view(request):
     return render(request, 'core/login.html')
 
 def logout_view(request):
-    host = request.get_host()  # ホスト名を取得
-    print(f"Logout page accessed from host: {host}")  # ログにホスト名を出力
-    
-    if request.method == 'POST':
-        logout(request)
-        return redirect('login')  # ログインページにリダイレクト
-    else:
-        return HttpResponseForbidden("Invalid request method")
+    logout(request)  # ユーザーをログアウト
+    request.session.flush()  # セッションを完全にクリア
+    return redirect('login')  # ログアウト後、ログイン画面にリダイレクト
 
 def student_home(request):
     host = request.get_host()  # ホスト名を取得
@@ -156,3 +159,7 @@ def attendance_plan(request):
         })
 
     return render(request, 'core/attendance_plan.html', {'attendance_data': attendance_data})
+
+def invalid_action(request):
+    # エラー画面を表示
+    return HttpResponseForbidden("無効なアクションです")
