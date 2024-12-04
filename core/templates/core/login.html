@@ -4,7 +4,7 @@
 <div class="login-container">
     <h2>ログイン</h2>
     {% if error %}
-        <p class="error">{{ error }}</p>
+        <p class="error">{{ error }}</p>  <!-- エラーメッセージを表示 -->
     {% endif %}
     <form method="post">
         {% csrf_token %}
