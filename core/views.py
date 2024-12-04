@@ -22,17 +22,20 @@ def login_view(request):
     if request.method == 'POST':
         student_name = request.POST['student_name']
         password = request.POST['password']
-
-        # 認証
+        
+        # Djangoの認証機能を使って認証
         user = authenticate(request, username=student_name, password=password)
-
+        
         if user is not None:
-            login(request, user)  # ログイン処理
-            return redirect('student_home')  # ログイン後に student_home にリダイレクト
+            # 認証成功
+            login(request, user)
+            return redirect('student_home')  # ログイン後にリダイレクト
         else:
-            return render(request, 'core/login.html', {'error': '無効な名前かパスワードです。'})
-    else:
-        return render(request, 'core/login.html')
+            # 認証失敗
+            error = '無効な名前かパスワードです'
+            return render(request, 'login.html', {'error': error})
+    
+    return render(request, 'login.html')
 
 def logout_view(request):
     host = request.get_host()  # ホスト名を取得
