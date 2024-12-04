@@ -5,8 +5,10 @@
     <h2>Welcome to Learning Support</h2>
     <p>あなたの学習をサポートするアプリです。</p>
 
-    <form method="GET" action="{% url 'login' %}" style="display: inline;">
-        <button type="submit" class="btn">ログイン</button>
-    </form>
+    {% if not user.is_authenticated %}
+        <form method="GET" action="{% url 'login' %}" style="display: inline;">
+            <button type="submit" class="btn">ログイン</button>
+        </form>
+    {% endif %}
 </div>
 {% endblock %}
