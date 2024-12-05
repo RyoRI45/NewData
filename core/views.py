@@ -26,24 +26,29 @@ def login_view(request):
     return render(request, 'core/login.html')
 
 def logout_view(request):
-    host = request.get_host()  # ホスト名を取得
-    print(f"Logout page accessed from host: {host}")  # ログにホスト名を出力
-    
-    if request.method == 'POST':
-        logout(request)
-        return redirect('login')  # ログインページにリダイレクト
-    else:
-        return HttpResponseForbidden("Invalid request method")
+    logout(request)  # ユーザーをログアウト
+    request.session.flush()  # セッションを完全にクリア
+    return redirect('login')  # ログイン画面にリダイレクト
 
 def student_home(request):
     host = request.get_host()  # ホスト名を取得
     print(f"Student home page accessed from host: {host}")  # ログにホスト名を出力
-    
+
     student_id = request.session.get('student_id')
     if not student_id:
+        # セッションが無い場合はログインページにリダイレクト
         return redirect('login')
+
+    # 学生情報を取得
     student = Student.objects.get(student_id=student_id)
-    return render(request, 'core/student_home.html', {'student': student})
+
+    # キャッシュ無効化ヘッダーを追加
+    response = render(request, 'core/student_home.html', {'student': student})
+    response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+
+    return response
 
 def manage_grades(request):
     host = request.get_host()  # ホスト名を取得

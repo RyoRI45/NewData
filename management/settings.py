@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'management.settings.debug_middleware',  # 正しいパスでデバッグミドルウェアを追加
+    'core.middleware.DisableBrowserCacheMiddleware',  # 必要であれば追加
 ]
 
 ROOT_URLCONF = 'management.urls'
