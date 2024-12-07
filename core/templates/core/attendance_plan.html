@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="attendance-plan">
+<div class="content-container">
     <h2>出席計画</h2>
     <table class="styled-table">
         <thead>
@@ -15,7 +15,7 @@
         </thead>
         <tbody>
             {% for data in attendance_data %}
-                <tr>
+                <tr class="{% if data.status == '危険' %}danger-row{% elif data.status == '注意' %}warning-row{% endif %}">
                     <td>{{ data.subject_name }}</td>
                     <td>{{ data.lesson_count }}</td>
                     <td>{{ data.attend_days }}</td>

@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
 
+{% block title %}
+ホーム - Learning Support
+{% endblock %}
+
 {% block content %}
 <div class="home-container">
     <h2>Welcome to Learning Support</h2>
     <p>あなたの学習をサポートするアプリです。</p>
 
-    {% if not user.is_authenticated %}
+    <!-- ボタンはスタイルを改善し、中央揃え -->
+    <div style="text-align: center; margin-top: 20px;">
         <form method="GET" action="{% url 'login' %}" style="display: inline;">
             <button type="submit" class="btn">ログイン</button>
         </form>
-    {% endif %}
+        <form method="GET" action="{% url 'register_student' %}" style="display: inline; margin-left: 10px;">
+            <button type="submit" class="btn">アカウント作成</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

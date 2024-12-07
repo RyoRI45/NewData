@@ -1,23 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="student-home">
+<div class="content-container">
     <h2>ようこそ、{{ student.student_name }}さん</h2>
     <p>学習管理をお手伝いします。</p>
-    <!-- 成績管理ボタン -->
-    <form method="GET" action="{% url 'manage_grades' %}" style="display: inline;">
-        <button type="submit" class="btn">成績管理</button>
-    </form>
 
-    <!-- 出席計画ボタン -->
-    <form method="GET" action="{% url 'attendance_plan' %}" style="display: inline;">
-        <button type="submit" class="btn">出席計画</button>
-    </form>
-
-    <!-- ログアウトフォーム -->
-    <form method="POST" action="{% url 'logout' %}" style="display: inline;">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">ログアウト</button>
-    </form>
+    <!-- ボタンエリア -->
+    <div class="button-group">
+        <form method="GET" action="{% url 'manage_grades' %}" style="display: inline;">
+            <button type="submit" class="btn">成績管理</button>
+        </form>
+        <form method="GET" action="{% url 'attendance_plan' %}" style="display: inline;">
+            <button type="submit" class="btn">出席計画</button>
+        </form>
+        <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">ログアウト</button>
+        </form>
+    </div>
 </div>
 {% endblock %}

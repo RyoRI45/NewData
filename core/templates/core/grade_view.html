@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="grade-view">
+<div class="content-container">
     <h2>成績閲覧</h2>
     <table class="styled-table">
         <thead>
@@ -19,7 +19,11 @@
             {% endfor %}
         </tbody>
     </table>
-    <p><strong>GPA:</strong> {{ gpa|floatformat:2 }}</p>
-    <p>{{ message }}</p>
+    <div class="grade-summary">
+        <p><strong>GPA:</strong> {{ gpa|floatformat:2 }}</p>
+        {% if message %}
+            <p class="message">{{ message }}</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
