@@ -10,6 +10,12 @@ def home(request):
     print(f"Request host: {request.get_host()}")  # ログにホスト名を出力
     return render(request, 'core/home.html')
 
+def register_student(request):
+    if request.method == 'POST':
+        # 登録処理を追加（例: データベースに保存）
+        pass
+    return render(request, 'core/register_student.html')
+
 def login_view(request):
     host = request.get_host()  # ホスト名を取得
     print(f"Login page accessed from host: {host}")  # ログにホスト名を出力
