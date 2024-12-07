@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'Z-SZBjZAaRkxTkR-yVsOrT5HAvpVaT5b4qG_PZjPb4y0LAsCjnN9b7WgoWhfVpWzQ2g'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS を環境に合わせて設定
 # ALLOWED_HOSTS = ['ryo45.pythonanywhere.com', 'localhost', '127.0.0.1', '*']
@@ -105,11 +105,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",  # 例えば、プロジェクトの静的ファイルを置く場所
-# ]
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    BASE_DIR / "static",  # 例えば、プロジェクトの静的ファイルを置く場所
 ]
 
 # STATIC_ROOT = '/home/Ryo45/NewData/static'
