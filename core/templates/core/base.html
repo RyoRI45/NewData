@@ -10,22 +10,30 @@
 <body>
     <header>
         <h1>Learning Support</h1>
-
         <!-- ナビゲーションバー -->
         <nav>
             <ul>
-                {% if request.resolver_match.url_name == 'home' %}
-                    <li><a href="{% url 'login' %}">ログイン</a></li>
-                    <li><a href="{% url 'register_student' %}">アカウント作成</a></li>
-                {% elif request.resolver_match.url_name == 'login' %}
-                    <li><a href="{% url 'home' %}">ホーム</a></li>
-                    <li><a href="{% url 'register_student' %}">アカウント作成</a></li>
+                {% if user.is_authenticated %}
+                    <!-- ログイン後のナビゲーションバー -->
+                    <li><a href="{% url 'student_home' %}">成績管理</a></li>
+                    <li><a href="{% url 'attendance_plan' %}">出席計画</a></li>
+                    <li>
+                        <form method="POST" action="{% url 'logout' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; color: white; cursor: pointer;">ログアウト</button>
+                        </form>
+                    </li>
                 {% else %}
-                    <li><a href="{% url 'home' %}">ホーム</a></li>
-                    <li><a href="{% url 'login' %}">ログイン</a></li>
-                    <li><a href="{% url 'logout' %}">ログアウト</a></li>
+                    <!-- ログイン前のナビゲーションバー -->
+                    {% if request.path == '/' %}
+                        <li><a href="{% url 'login' %}">ログイン</a></li>
+                        <li><a href="{% url 'register_student' %}">アカウント作成</a></li>
+                    {% elif request.path == '/login/' %}
+                        <li><a href="{% url 'home' %}">ホーム</a></li>
+                        <li><a href="{% url 'register_student' %}">アカウント作成</a></li>
+                    {% endif %}
                 {% endif %}
-            </ul>            
+            </ul>
         </nav>
     </header>
 
