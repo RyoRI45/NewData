@@ -2,30 +2,30 @@
 
 {% block content %}
 <!-- ヘッダー -->
-<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f8f9fa;">
-    <div>
-        <h1>学習管理システム</h1>
-    </div>
+<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #28a745; color: white;">
+    <h1 style="margin: 0; font-size: 1.5rem;">Learning Support</h1>
     <!-- ナビゲーションバー -->
     <nav>
         <ul style="list-style: none; display: flex; gap: 15px; margin: 0; padding: 0;">
-            <li><a href="{% url 'student_home' %}">成績管理</a></li>
-            <li><a href="{% url 'attendance_plan' %}">出席計画</a></li>
-            <li><a href="{% url 'logout' %}">ログアウト</a></li>
+            <li><a href="{% url 'manage_grades' %}" style="text-decoration: none; color: white; font-weight: bold;">成績管理</a></li>
+            <li><a href="{% url 'attendance_plan' %}" style="text-decoration: none; color: white; font-weight: bold;">出席計画</a></li>
+            <li><a href="{% url 'logout' %}" style="text-decoration: none; color: white; font-weight: bold;">ログアウト</a></li>
         </ul>
     </nav>
 </header>
-<div class="content-container">
+
+<!-- メインコンテンツ -->
+<div class="content-container" style="padding: 20px;">
     <h2>ようこそ、{{ student.student_name }}さん</h2>
     <p>学習管理をお手伝いします。</p>
 
     <!-- ボタンエリア -->
-    <div class="button-group">
+    <div class="button-group" style="margin-top: 20px;">
         <form method="GET" action="{% url 'manage_grades' %}" style="display: inline;">
-            <button type="submit" class="btn">成績管理</button>
+            <button type="submit" class="btn btn-primary">成績管理</button>
         </form>
         <form method="GET" action="{% url 'attendance_plan' %}" style="display: inline;">
-            <button type="submit" class="btn">出席計画</button>
+            <button type="submit" class="btn btn-primary">出席計画</button>
         </form>
         <form method="POST" action="{% url 'logout' %}" style="display: inline;">
             {% csrf_token %}
