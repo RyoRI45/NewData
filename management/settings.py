@@ -105,8 +105,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",  # 例えば、プロジェクトの静的ファイルを置く場所
+# ]
+# 静的ファイルのディレクトリパス
 STATICFILES_DIRS = [
-    BASE_DIR / "static",  # 例えば、プロジェクトの静的ファイルを置く場所
+    BASE_DIR / "management" / "static",  # 'management/static' を指す
 ]
 
 # STATIC_ROOT = '/home/Ryo45/NewData/static'
