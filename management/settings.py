@@ -129,6 +129,10 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+LOGIN_URL = '/login/'  # ログインページのURL
+LOGIN_REDIRECT_URL = '/student_home/'  # ログイン成功後のリダイレクト先
+LOGOUT_REDIRECT_URL = '/'  # ログアウト後のリダイレクト先
+
 LOGOUT_REDIRECT_URL = 'login'  # ログアウト後のリダイレクト先
 
 # Logging
