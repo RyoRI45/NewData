@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from .models import Student, Subject, GPA
 from django.http import HttpResponseForbidden
+from core.models import Student  # Student モデルのインポート
 
 # Create your views here.
 
@@ -36,17 +38,20 @@ def logout_view(request):
     request.session.flush()  # セッションを完全にクリア
     return redirect('login')  # ログイン画面にリダイレクト
 
+@login_required
 def student_home(request):
-    host = request.get_host()  # ホスト名を取得
-    print(f"Student home page accessed from host: {host}")  # ログにホスト名を出力
-
+    # セッションから student_id を取得
     student_id = request.session.get('student_id')
     if not student_id:
         # セッションが無い場合はログインページにリダイレクト
         return redirect('login')
 
-    # 学生情報を取得
-    student = Student.objects.get(student_id=student_id)
+    try:
+        # 学生情報を取得
+        student = Student.objects.get(student_id=student_id)
+    except Student.DoesNotExist:
+        # 学生が見つからない場合の処理（適宜エラーメッセージを追加）
+        return redirect('login')
 
     # キャッシュ無効化ヘッダーを追加
     response = render(request, 'core/student_home.html', {'student': student})
