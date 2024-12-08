@@ -135,6 +135,9 @@ LOGOUT_REDIRECT_URL = '/'  # ログアウト後のリダイレクト先
 
 LOGOUT_REDIRECT_URL = 'login'  # ログアウト後のリダイレクト先
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # デフォルト
+SESSION_COOKIE_AGE = 1209600  # セッション有効期限 (秒)
+
 # Logging
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
