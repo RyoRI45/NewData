@@ -10,7 +10,11 @@ header {
     background-color: #4CAF50;
     color: white;
     text-align: center;
-    padding: 1em 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    color: white;
 }
 
 nav {
@@ -257,15 +261,6 @@ body {
     background-size: cover;
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #4CAF50; /* 好みの色 */
-    padding: 10px 20px;
-    color: white;
-}
-
 header h1 {
     margin: 0;
     font-size: 24px;
@@ -274,12 +269,16 @@ header h1 {
 nav ul {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 20px;
     display: flex;
 }
 
 nav ul li {
-    margin-left: 20px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 nav ul li a {
