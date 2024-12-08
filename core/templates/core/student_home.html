@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- ヘッダー -->
+<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f8f9fa;">
+    <div>
+        <h1>学習管理システム</h1>
+    </div>
+    <!-- ナビゲーションバー -->
+    <nav>
+        <ul style="list-style: none; display: flex; gap: 15px; margin: 0; padding: 0;">
+            <li><a href="{% url 'student_home' %}">成績管理</a></li>
+            <li><a href="{% url 'attendance_plan' %}">出席計画</a></li>
+            <li><a href="{% url 'logout' %}">ログアウト</a></li>
+        </ul>
+    </nav>
+</header>
 <div class="content-container">
     <h2>ようこそ、{{ student.student_name }}さん</h2>
     <p>学習管理をお手伝いします。</p>
