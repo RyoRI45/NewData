@@ -18,6 +18,7 @@ def register_student(request):
         pass
     return render(request, 'core/register_student.html')
 
+@login_required
 def login_view(request):
     host = request.get_host()  # ホスト名を取得
     print(f"Login page accessed from host: {host}")  # ログにホスト名を出力
