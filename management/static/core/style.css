@@ -7,13 +7,11 @@ body {
 }
 
 header {
-    background-color: #4CAF50;
-    color: white;
-    text-align: center;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
+    background-color: green; /* ヘッダーの背景色を設定 */
     color: white;
 }
 
@@ -268,17 +266,14 @@ header h1 {
 
 nav ul {
     list-style: none;
+    margin: 0;
     padding: 0;
-    margin: 20px;
     display: flex;
+    gap: 15px; /* リンク間の間隔 */
 }
 
 nav ul li {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 5px;
+    display: inline;
 }
 
 nav ul li a {
