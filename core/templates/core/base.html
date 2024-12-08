@@ -14,16 +14,13 @@
         <!-- ナビゲーションバー -->
         <nav>
             <ul>
-                {% if request.path == '/' %}
-                    <!-- ホーム画面のナビゲーションバー -->
+                {% if request.resolver_match.url_name == 'home' %}
                     <li><a href="{% url 'login' %}">ログイン</a></li>
                     <li><a href="{% url 'register_student' %}">アカウント作成</a></li>
-                {% elif request.path == '/login/' %}
-                    <!-- ログイン画面のナビゲーションバー -->
+                {% elif request.resolver_match.url_name == 'login' %}
                     <li><a href="{% url 'home' %}">ホーム</a></li>
                     <li><a href="{% url 'register_student' %}">アカウント作成</a></li>
                 {% else %}
-                    <!-- その他ページのナビゲーションバー -->
                     <li><a href="{% url 'home' %}">ホーム</a></li>
                     <li><a href="{% url 'login' %}">ログイン</a></li>
                     <li>
@@ -33,7 +30,7 @@
                         </form>
                     </li>
                 {% endif %}
-            </ul>
+            </ul>            
         </nav>
     </header>
 
