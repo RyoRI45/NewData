@@ -14,7 +14,6 @@
         <!-- ナビゲーションバー -->
         <nav>
             <ul>
-                <li>ナビゲーションバーがレンダリングされました</li>
                 {% if request.resolver_match.url_name == 'home' %}
                     <li><a href="{% url 'login' %}">ログイン</a></li>
                     <li><a href="{% url 'register_student' %}">アカウント作成</a></li>
@@ -24,12 +23,7 @@
                 {% else %}
                     <li><a href="{% url 'home' %}">ホーム</a></li>
                     <li><a href="{% url 'login' %}">ログイン</a></li>
-                    <li>
-                        <form method="POST" action="{% url 'logout' %}" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn">ログアウト</button>
-                        </form>
-                    </li>
+                    <li><a href="{% url 'logout' %}">ログアウト</a></li>
                 {% endif %}
             </ul>            
         </nav>
