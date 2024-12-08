@@ -8,20 +8,22 @@
     <link rel="stylesheet" href="{% static 'core/style.css' %}">
 </head>
 <body>
-    <header>
-        <h1>Learning Support</h1>
-        <!-- ナビゲーションバー -->
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #28a745; color: white;">
+        <!-- 左側: サイトタイトル -->
+        <h1 style="margin: 0; font-size: 1.5rem;">Learning Support</h1>
+    
+        <!-- 右側: ナビゲーションバー -->
         <nav>
-            <ul>
+            <ul style="list-style: none; display: flex; gap: 15px; margin: 0; padding: 0;">
                 {% if user.is_authenticated %}
-                    <!-- ログイン後のナビゲーションバー -->
-                    <li><a href="{% url 'student_home' %}">成績管理</a></li>
-                    <li><a href="{% url 'attendance_plan' %}">出席計画</a></li>
-                    <li><a href="{% url 'logout' %}">ログアウト</a></li>
+                    <!-- ログインしている場合 -->
+                    <li><a href="{% url 'manage_grades' %}" style="text-decoration: none; color: white; font-weight: bold;">成績管理</a></li>
+                    <li><a href="{% url 'attendance_plan' %}" style="text-decoration: none; color: white; font-weight: bold;">出席計画</a></li>
+                    <li><a href="{% url 'logout' %}" style="text-decoration: none; color: white; font-weight: bold;">ログアウト</a></li>
                 {% else %}
-                    <!-- ログイン前のナビゲーションバー -->
-                    <li><a href="{% url 'login' %}">ログイン</a></li>
-                    <li><a href="{% url 'register_student' %}">アカウント作成</a></li>
+                    <!-- ログインしていない場合 -->
+                    <li><a href="{% url 'login' %}" style="text-decoration: none; color: white; font-weight: bold;">ログイン</a></li>
+                    <li><a href="{% url 'register_student' %}" style="text-decoration: none; color: white; font-weight: bold;">アカウント作成</a></li>
                 {% endif %}
             </ul>
         </nav>
