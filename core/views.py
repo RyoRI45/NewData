@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from .models import Student, Subject, GPA
 from django.http import HttpResponseForbidden
@@ -19,36 +19,36 @@ def register_student(request):
     return render(request, 'core/register_student.html')
 
 def login_view(request):
-    if request.method == "POST":
-        username = request.POST['username']
+    host = request.get_host()  # ホスト名を取得
+    print(f"Login page accessed from host: {host}")  # ログにホスト名を出力
+    
+    if request.method == 'POST':
+        student_name = request.POST['student_name']
         password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('home')  # ログイン後のリダイレクト先
-        else:
-            return render(request, 'login.html', {'error': 'Invalid credentials'})
-    return render(request, 'login.html')
+        try:
+            student = Student.objects.get(student_name=student_name, password=password)
+            request.session['student_id'] = student.student_id
+            return redirect('student_home')
+        except Student.DoesNotExist:
+            return render(request, 'core/login.html', {'error': 'ログインに失敗しました'})
+    return render(request, 'core/login.html')
 
 def logout_view(request):
     logout(request)  # ユーザーをログアウト
     request.session.flush()  # セッションを完全にクリア
     return redirect('login')  # ログイン画面にリダイレクト
 
-@login_required
 def student_home(request):
-    # セッションから student_id を取得
+    host = request.get_host()  # ホスト名を取得
+    print(f"Student home page accessed from host: {host}")  # ログにホスト名を出力
+
     student_id = request.session.get('student_id')
     if not student_id:
         # セッションが無い場合はログインページにリダイレクト
         return redirect('login')
 
-    try:
-        # 学生情報を取得
-        student = Student.objects.get(student_id=student_id)
-    except Student.DoesNotExist:
-        # 学生が見つからない場合の処理（適宜エラーメッセージを追加）
-        return redirect('login')
+    # 学生情報を取得
+    student = Student.objects.get(student_id=student_id)
 
     # キャッシュ無効化ヘッダーを追加
     response = render(request, 'core/student_home.html', {'student': student})
