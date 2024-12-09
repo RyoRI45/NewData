@@ -4,8 +4,18 @@ from django.contrib.auth.decorators import login_required
 from .models import Student, Subject, GPA
 from django.http import HttpResponseForbidden
 from core.models import Student  # Student モデルのインポート
+from functools import wraps
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
+
+def custom_login_required(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
 
 def home(request):
     host = request.get_host()  # ホスト名を取得
@@ -18,7 +28,6 @@ def register_student(request):
         pass
     return render(request, 'core/register_student.html')
 
-@login_required
 def login_view(request):
     host = request.get_host()  # ホスト名を取得
     print(f"Login page accessed from host: {host}")  # ログにホスト名を出力
@@ -39,17 +48,19 @@ def logout_view(request):
     request.session.flush()  # セッションを完全にクリア
     return redirect('login')  # ログイン画面にリダイレクト
 
+@custom_login_required
 def student_home(request):
-    host = request.get_host()  # ホスト名を取得
-    print(f"Student home page accessed from host: {host}")  # ログにホスト名を出力
+    # ログにアクセス元のホスト名を出力（デバッグ用）
+    host = request.get_host()
+    print(f"Student home page accessed from host: {host}")
 
-    student_id = request.session.get('student_id')
-    if not student_id:
-        # セッションが無い場合はログインページにリダイレクト
+    try:
+        # 現在のログインユーザーに関連付けられた学生情報を取得
+        student = Student.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        # 学生情報が見つからない場合はログインページにリダイレクト
+        print(f"Student record not found for user: {request.user}")
         return redirect('login')
-
-    # 学生情報を取得
-    student = Student.objects.get(student_id=student_id)
 
     # キャッシュ無効化ヘッダーを追加
     response = render(request, 'core/student_home.html', {'student': student})
