@@ -3,7 +3,7 @@
 {% block content %}
 <!-- ヘッダー -->
 <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #28a745; color: white;">
-    <h1 style="margin: 0; font-size: 1.5rem;">Learning Support</h1>
+    <h1 style="margin: 0; font-size: 1.5rem;">ようこそ、{{ student.student_name }}さん</h1>
     <!-- ナビゲーションバー -->
     <nav>
         <ul style="list-style: none; display: flex; gap: 15px; margin: 0; padding: 0;">
@@ -16,7 +16,6 @@
 
 <!-- メインコンテンツ -->
 <div class="content-container" style="padding: 20px;">
-    <h2>ようこそ、{{ student.student_name }}さん</h2>
     <p>学習管理をお手伝いします。</p>
 
     <!-- ボタンエリア -->
