@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #28a745; color: white;">
+    <h1 style="margin: 0; font-size: 1.5rem;">科目・成績登録</h1>
+    <!-- ナビゲーションバー -->
+    <nav>
+        <ul style="list-style: none; display: flex; gap: 15px; margin: 0; padding: 0;">
+            <li><a href="{% url 'student_home' %}" style="text-decoration: none; color: white; font-weight: bold;">ホームに戻る</a></li>
+            <li><a href="{% url 'manage_grades' %}" style="text-decoration: none; color: white; font-weight: bold;">成績管理</a></li>
+            <li><a href="{% url 'logout' %}" style="text-decoration: none; color: white; font-weight: bold;">ログアウト</a></li>
+        </ul>
+    </nav>
+</header>
+
 <div class="content-container">
-    <h2>科目登録</h2>
     {% if error %}
         <p class="error">{{ error }}</p>
     {% endif %}
