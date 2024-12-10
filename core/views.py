@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Student, Subject, GPA
 from django.http import HttpResponseForbidden
 from core.models import Student  # Student モデルのインポート
+import uuid
 
 # Create your views here.
 
@@ -12,10 +13,30 @@ def home(request):
     print(f"Request host: {request.get_host()}")  # ログにホスト名を出力
     return render(request, 'core/home.html')
 
+#アカウント作成
 def register_student(request):
     if request.method == 'POST':
-        # 登録処理を追加（例: データベースに保存）
-        pass
+        student_name = request.POST.get('student_name', '').strip()
+        password = request.POST.get('password', '').strip()
+
+        # 入力値のチェック
+        if not student_name or not password:
+            return render(request, 'core/register_student.html', {
+                'error': '全ての項目を入力してください。'
+            })
+
+        # 学生名が重複しないかチェック
+        if Student.objects.filter(student_name=student_name).exists():
+            return render(request, 'core/register_student.html', {
+                'error': 'この学生名は既に登録されています。'
+            })
+
+        # ランダムな student_id を生成して Student モデルに登録
+        student_id = str(uuid.uuid4())[:8]  # UUIDの最初の8文字をIDに使用
+        Student.objects.create(student_id=student_id, student_name=student_name, password=password)
+
+        return redirect('home')  # 登録後はホームへリダイレクト
+
     return render(request, 'core/register_student.html')
 
 def login_view(request):

@@ -1,21 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="register-student">
-    <h2>学生登録</h2>
-    <p>このページは学生登録フォームを表示します（仮テンプレート）。</p>
-    <form method="post">
-        {% csrf_token %}
-        <label for="student_name">名前:</label>
-        <input type="text" id="student_name" name="student_name" required>
+<header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #28a745; color: white;">
+    <h1>アカウント作成</h1>
+    <!-- ナビゲーションバー -->
+    <nav>
+        <ul style="list-style: none; display: flex; gap: 15px; margin: 0; padding: 0;">
+            <li><a href="{% url 'home' %}" style="text-decoration: none; color: white; font-weight: bold;">ホーム</a></li>
+            <li><a href="{% url 'login' %}" style="text-decoretaion: none; color: white; font-weight: bold">ログイン</a></li>
+        </ul>
+    </nav>
+</header>
 
-        <label for="email">メールアドレス:</label>
-        <input type="email" id="email" name="email" required>
-
-        <label for="password">パスワード:</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit" class="btn">登録</button>
-    </form>
+<div style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+    <div style="width: 100%; max-width: 400px; text-align: center;">
+        <p>ここではアカウント作成を行います</p>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <!-- エラーメッセージ -->
+            {% if error %}
+                <p style="color: red; font-weight: bold; margin-bottom: 15px;">{{ error }}</p>
+            {% endif %}
+            
+            <!-- 学生名 -->
+            <div style="margin-bottom: 15px;">
+                <label for="student_name" style="display: block; font-weight: bold;">学生名</label>
+                <input type="text" id="student_name" name="student_name" required style="width: 100%; padding: 10px; font-size: 1rem;">
+            </div>
+            
+            <!-- パスワード -->
+            <div style="margin-bottom: 15px;">
+                <label for="password" style="display: block; font-weight: bold;">パスワード</label>
+                <input type="password" id="password" name="password" required style="width: 100%; padding: 10px; font-size: 1rem;">
+            </div>
+            
+            <!-- 登録ボタン -->
+            <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; font-size: 1rem; cursor: pointer;">
+                登録
+            </button>
+        </form>
+    </div>
 </div>
 {% endblock %}
