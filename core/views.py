@@ -85,6 +85,7 @@ def manage_grades(request):
     return render(request, 'core/manage_grades.html')
 
 def subject_register(request):
+    grades = range(1, 6)  # 成績選択肢を生成
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
         grade = request.POST.get('grade')
@@ -94,6 +95,7 @@ def subject_register(request):
         # 入力データのチェック
         if not name or not grade or not date or not table:
             return render(request, 'core/subject_register.html', {
+                'grades': grades,
                 'error': '全ての項目を入力してください。'
             })
 
@@ -102,7 +104,7 @@ def subject_register(request):
 
         return redirect('student_home')  # 登録後は学生ホームページにリダイレクト
 
-    return render(request, 'core/subject_register.html')
+    return render(request, 'core/subject_register.html', {'grades': grades})
 
 def calculate_gpa(student_id):
     # 学生の全ての成績を取得

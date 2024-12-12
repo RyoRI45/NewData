@@ -29,15 +29,15 @@
             </div>
 
             <!-- 成績 -->
-            <div style="margin-bottom: 15px;">
+            <<div style="margin-bottom: 15px;">
                 <label for="grade" style="display: block; font-weight: bold;">成績</label>
                 <select id="grade" name="grade" required style="width: 100%; padding: 10px; font-size: 1rem;">
                     <option value="" disabled selected>選択してください</option>
-                    {% for i in range(1, 6) %}
+                    {% for i in grades %}
                         <option value="{{ i }}">{{ i }}</option>
                     {% endfor %}
                 </select>
-            </div>
+            </div>            
 
             <!-- 曜日 -->
             <div style="margin-bottom: 15px;">
