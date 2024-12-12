@@ -100,7 +100,12 @@ def subject_register(request):
             })
 
         # データをSubjectモデルに保存
-        Subject.objects.create(name=name, grade=int(grade), date=date, table=table)
+        Subject.objects.create(
+            subject_name=name,
+            subject_score=int(grade),
+            date=date,
+            table=table
+        )
 
         return redirect('student_home')  # 登録後は学生ホームページにリダイレクト
 
