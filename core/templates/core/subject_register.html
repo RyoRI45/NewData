@@ -2,34 +2,73 @@
 
 {% block content %}
 <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background-color: #28a745; color: white;">
-    <h1 style="margin: 0; font-size: 1.5rem;">科目・成績登録</h1>
+    <h1>科目・成績登録</h1>
     <!-- ナビゲーションバー -->
     <nav>
         <ul style="list-style: none; display: flex; gap: 15px; margin: 0; padding: 0;">
             <li><a href="{% url 'student_home' %}" style="text-decoration: none; color: white; font-weight: bold;">ホームに戻る</a></li>
-            <li><a href="{% url 'manage_grades' %}" style="text-decoration: none; color: white; font-weight: bold;">成績管理</a></li>
-            <li><a href="{% url 'logout' %}" style="text-decoration: none; color: white; font-weight: bold;">ログアウト</a></li>
+            <li><a href="{% url 'attendance_plan' %}" style="text-decoretaion: none; color: white; font-weight: bold">出席状況</a></li>
+            <li><a href="{% url 'logout' %}" style="text-decoretaion: none; color: white; font-weight: bold">ログアウト</a></li>
         </ul>
     </nav>
 </header>
 
-<div class="content-container">
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
-    <form method="post" class="form-container">
-        {% csrf_token %}
-        <label for="subject_class">科目分類:</label>
-        <select id="subject_class" name="subject_class">
-            <option value="必修">必修</option>
-            <option value="教養">教養</option>
-            <option value="専門">専門</option>
-        </select>
+<div style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+    <div style="width: 100%; max-width: 400px; text-align: center;">
+        <p>ここでは、科目と成績の登録を行います</p>
+        <form method="POST" action="">
+            {% csrf_token %}
+            {% if error %}
+                <p style="color: red; font-weight: bold; margin-bottom: 15px;">{{ error }}</p>
+            {% endif %}
 
-        <label for="subject_name">科目名:</label>
-        <input type="text" id="subject_name" name="subject_name" required>
+            <!-- 科目名 -->
+            <div style="margin-bottom: 15px;">
+                <label for="name" style="display: block; font-weight: bold;">科目名</label>
+                <input type="text" id="name" name="name" required style="width: 100%; padding: 10px; font-size: 1rem;">
+            </div>
 
-        <button type="submit" class="btn">登録</button>
-    </form>
+            <!-- 成績 -->
+            <div style="margin-bottom: 15px;">
+                <label for="grade" style="display: block; font-weight: bold;">成績</label>
+                <select id="grade" name="grade" required style="width: 100%; padding: 10px; font-size: 1rem;">
+                    <option value="" disabled selected>選択してください</option>
+                    {% for i in range(1, 6) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- 曜日 -->
+            <div style="margin-bottom: 15px;">
+                <label for="date" style="display: block; font-weight: bold;">曜日</label>
+                <select id="date" name="date" required style="width: 100%; padding: 10px; font-size: 1rem;">
+                    <option value="" disabled selected>選択してください</option>
+                    <option value="月曜日">月曜日</option>
+                    <option value="火曜日">火曜日</option>
+                    <option value="水曜日">水曜日</option>
+                    <option value="木曜日">木曜日</option>
+                    <option value="金曜日">金曜日</option>
+                </select>
+            </div>
+
+            <!-- 時間割 -->
+            <div style="margin-bottom: 15px;">
+                <label for="table" style="display: block; font-weight: bold;">時間割</label>
+                <select id="table" name="table" required style="width: 100%; padding: 10px; font-size: 1rem;">
+                    <option value="" disabled selected>選択してください</option>
+                    <option value="1限目">1限目（9:00～10:30）</option>
+                    <option value="2限目">2限目（11:00～12:30）</option>
+                    <option value="3限目">3限目（13:30～15:00）</option>
+                    <option value="4限目">4限目（15:30～17:00）</option>
+                </select>
+            </div>
+
+            <!-- 登録ボタン -->
+            <button type="submit" style="background-color: #28a745; color: white; border: none; padding: 10px 20px; font-size: 1rem; cursor: pointer;">
+                登録
+            </button>
+        </form>
+    </div>
 </div>
 {% endblock %}

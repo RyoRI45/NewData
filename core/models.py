@@ -27,6 +27,8 @@ class Subject(models.Model):
     lesson_days = models.IntegerField(default=15)
     attend_days = models.IntegerField(default=0)
     lesson_count = models.IntegerField(default=0)
+    date = models.CharField(max_length=10, default="月曜日")  # 曜日
+    table = models.CharField(max_length=10, default="1限目")  # 時間割
 
     def __str__(self):
         return self.subject_name

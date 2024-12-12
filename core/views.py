@@ -85,53 +85,35 @@ def manage_grades(request):
     return render(request, 'core/manage_grades.html')
 
 def subject_register(request):
-    host = request.get_host()  # ホスト名を取得
-    print(f"Subject register page accessed from host: {host}")  # ログにホスト名を出力
-    
     if request.method == 'POST':
-        student_id = request.session.get('student_id')
-        student = Student.objects.get(student_id=student_id)
-        subject_class = request.POST['subject_class']
-        subject_name = request.POST['subject_name']
+        name = request.POST.get('name', '').strip()
+        grade = request.POST.get('grade')
+        date = request.POST.get('date')
+        table = request.POST.get('table')
 
-        # 科目数チェック
-        subject_count = Subject.objects.filter(student=student).count()
-        if subject_count >= 5:
-            return render(request, 'core/subject_register.html', {'error': '登録可能な科目数は最大5件です'})
+        # 入力データのチェック
+        if not name or not grade or not date or not table:
+            return render(request, 'core/subject_register.html', {
+                'error': '全ての項目を入力してください。'
+            })
 
-        # 成績と授業回数設定
-        if subject_count in [0]: #1科目
-            subject_score = 1
-            lesson_count = 4
-            attend_days = 1
-        elif subject_count in [1]: #2科目
-            subject_score = 2
-            lesson_count = 8
-            attend_days = 3
-        elif subject_count in [2,]: #3科目
-            subject_score = 3
-            lesson_count = 7
-            attend_days = 4
-        elif subject_count in [3]: #4科目
-            subject_score = 4
-            lesson_count = 9
-            attend_days = 7
-        else:
-            subject_score = 4
-            lesson_count = 11
-            attend_days = 9
+        # データをSubjectモデルに保存
+        Subject.objects.create(name=name, grade=int(grade), date=date, table=table)
 
-        Subject.objects.create(
-            student=student,
-            subject_name=subject_name,
-            subject_class=subject_class,
-            subject_score=subject_score,
-            lesson_count=lesson_count,
-            attend_days=attend_days,
-        )
-        return redirect('manage_grades')
+        return redirect('student_home')  # 登録後は学生ホームページにリダイレクト
 
     return render(request, 'core/subject_register.html')
+
+def calculate_gpa(student_id):
+    # 学生の全ての成績を取得
+    subjects = Subject.objects.filter(student_id=student_id)
+    if not subjects.exists():
+        return 0.0
+
+    # 成績の合計と科目数
+    total_grade = sum(subject.grade for subject in subjects)
+    gpa = total_grade / subjects.count()
+    return round(gpa, 2)  # 小数点以下2桁で丸める
 
 def grade_view(request):
     host = request.get_host()  # ホスト名を取得
