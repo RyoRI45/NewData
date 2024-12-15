@@ -62,6 +62,7 @@ def login_view(request):
     # GETリクエスト時、通常のログインページを表示
     return render(request, 'core/login.html')
 
+
 def logout_view(request):
     logout(request)  # ユーザーをログアウト
     request.session.flush()  # セッションを完全にクリア
@@ -94,6 +95,8 @@ def manage_grades(request):
 
 @login_required
 def subject_register(request):
+    print(f"Logged-in user ID: {request.user.id}")  # デバッグ用
+
     grades = range(1, 6)  # 成績選択肢を生成
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
