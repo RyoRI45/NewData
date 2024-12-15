@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from .models import Student, Subject, GPA
 from django.http import HttpResponseForbidden
 from core.models import Student  # Student モデルのインポート
+from django.conf import settings
 import uuid
 
 # Create your views here.
@@ -40,18 +41,25 @@ def register_student(request):
     return render(request, 'core/register_student.html')
 
 def login_view(request):
-    host = request.get_host()  # ホスト名を取得
-    print(f"Login page accessed from host: {host}")  # ログにホスト名を出力
-    
     if request.method == 'POST':
-        student_name = request.POST['student_name']
-        password = request.POST['password']
-        try:
-            student = Student.objects.get(student_name=student_name, password=password)
-            request.session['student_id'] = student.student_id
-            return redirect('student_home')
-        except Student.DoesNotExist:
-            return render(request, 'core/login.html', {'error': 'ログインに失敗しました'})
+        username = request.POST.get('student_name')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            
+            # next パラメータが存在する場合、そのURLにリダイレクト
+            next_url = request.GET.get('next')
+            if next_url:
+                return redirect(next_url)
+            
+            # next がない場合、デフォルトのリダイレクト先へ
+            return redirect(settings.LOGIN_REDIRECT_URL)
+        else:
+            return render(request, 'core/login.html', {'error': '無効なユーザー名またはパスワードです。'})
+    
+    # GETリクエスト時、通常のログインページを表示
     return render(request, 'core/login.html')
 
 def logout_view(request):
