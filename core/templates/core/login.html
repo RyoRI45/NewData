@@ -13,7 +13,7 @@
     </nav>
 </header>
 
-<div class="content-container">
+<form method="post" class="form-container" action="{% url 'login' %}?next={{ request.GET.next }}">
     {% if error %}
         <p class="error">{{ error }}</p>
     {% endif %}
