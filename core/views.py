@@ -84,6 +84,7 @@ def manage_grades(request):
     print(f"Manage grades page accessed from host: {host}")  # ログにホスト名を出力
     return render(request, 'core/manage_grades.html')
 
+@login_required
 def subject_register(request):
     grades = range(1, 6)  # 成績選択肢を生成
     if request.method == 'POST':
@@ -100,11 +101,13 @@ def subject_register(request):
             })
 
         # データをSubjectモデルに保存
+        student_id = request.user.username  # ログインユーザーのusernameをstudent_idに設定（適宜調整）
         Subject.objects.create(
             subject_name=name,
             subject_score=int(grade),
             date=date,
-            table=table
+            table=table,
+            student_id = student_id
         )
 
         return redirect('student_home')  # 登録後は学生ホームページにリダイレクト
