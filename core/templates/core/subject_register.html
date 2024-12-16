@@ -13,6 +13,13 @@
     </nav>
 </header>
 
+{% if debug %}
+  <div style="color: red; font-weight: bold;">{{ debug }}</div>
+{% endif %}
+
+<p>Logged-in user: {{ user.username }}</p>
+<p>Authenticated: {{ user.is_authenticated }}</p>
+
 <div style="display: flex; justify-content: center; align-items: center; height: 80vh;">
     <div style="width: 100%; max-width: 400px; text-align: center;">
         <p>ここでは、科目と成績の登録を行います</p>

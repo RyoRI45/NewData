@@ -98,6 +98,12 @@ def manage_grades(request):
 def subject_register(request):
     print(f"Logged-in user: {request.user}")  # デバッグ用
     print(f"Is authenticated: {request.user.is_authenticated}")  # 認証状態を確認
+    
+    #デバッグ用
+    context = {
+        'grades': grades,
+        'user': request.user  # ユーザー情報をテンプレートに渡す
+    }
 
     grades = range(1, 6)
     if request.method == 'POST':
@@ -105,6 +111,8 @@ def subject_register(request):
         grade = request.POST.get('grade')
         date = request.POST.get('date')
         table = request.POST.get('table')
+        #デバッグ用
+        context['debug'] = f"User: {request.user}, Authenticated: {request.user.is_authenticated}"
 
         if not name or not grade or not date or not table:
             return render(request, 'core/subject_register.html', {
