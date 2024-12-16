@@ -6,6 +6,7 @@ from django.http import HttpResponseForbidden
 from core.models import Student  # Student モデルのインポート
 from django.conf import settings
 import uuid
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -111,16 +112,24 @@ def subject_register(request):
                 'error': '全ての項目を入力してください。'
             })
 
-        # ログインユーザーのIDを student_id に設定
-        student_id = request.user.username  # または request.user.id
-        print(f"Assigned student_id: {student_id}")  # デバッグ用
+        # ログインユーザーの情報を core_student から取得
+        try:
+            student = get_object_or_404(Student, student_id=request.user.username)
+            print(f"Student record found: {student.student_id}")  # デバッグ用
+        except Exception as e:
+            print(f"Error finding student: {e}")  # デバッグ用
+            return render(request, 'core/subject_register.html', {
+                'grades': grades,
+                'error': '学生情報が見つかりません。管理者に連絡してください。'
+            })
 
+        # Subject にデータを作成
         Subject.objects.create(
             subject_name=name,
             subject_score=int(grade),
             date=date,
             table=table,
-            student_id=student_id
+            student_id=student.student_id  # 外部キーの値を適切に設定
         )
 
         return redirect('student_home')
