@@ -95,33 +95,35 @@ def manage_grades(request):
 
 @login_required
 def subject_register(request):
-    print(f"Logged-in user ID: {request.user.id}")  # デバッグ用
+    print(f"Logged-in user: {request.user}")  # デバッグ用
+    print(f"Is authenticated: {request.user.is_authenticated}")  # 認証状態を確認
 
-    grades = range(1, 6)  # 成績選択肢を生成
+    grades = range(1, 6)
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
         grade = request.POST.get('grade')
         date = request.POST.get('date')
         table = request.POST.get('table')
 
-        # 入力データのチェック
         if not name or not grade or not date or not table:
             return render(request, 'core/subject_register.html', {
                 'grades': grades,
                 'error': '全ての項目を入力してください。'
             })
 
-        # データをSubjectモデルに保存
-        student_id = request.user.username  # ログインユーザーのusernameをstudent_idに設定（適宜調整）
+        # ログインユーザーのIDを student_id に設定
+        student_id = request.user.username  # または request.user.id
+        print(f"Assigned student_id: {student_id}")  # デバッグ用
+
         Subject.objects.create(
             subject_name=name,
             subject_score=int(grade),
             date=date,
             table=table,
-            student_id = student_id
+            student_id=student_id
         )
 
-        return redirect('student_home')  # 登録後は学生ホームページにリダイレクト
+        return redirect('student_home')
 
     return render(request, 'core/subject_register.html', {'grades': grades})
 
