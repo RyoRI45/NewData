@@ -98,51 +98,47 @@ def manage_grades(request):
 def subject_register(request):
     print(f"Logged-in user: {request.user}")  # デバッグ用
     print(f"Is authenticated: {request.user.is_authenticated}")  # 認証状態を確認
-    
-    #デバッグ用
-    context = {
-        'grades': grades,
-        'user': request.user  # ユーザー情報をテンプレートに渡す
-    }
 
-    grades = range(1, 6)
+    debug_info = f"ユーザー: {request.user} | 認証状態: {request.user.is_authenticated}"
+
+    grades = range(1, 6)  # ここで grades を定義しておく
+
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
         grade = request.POST.get('grade')
         date = request.POST.get('date')
         table = request.POST.get('table')
-        #デバッグ用
-        context['debug'] = f"User: {request.user}, Authenticated: {request.user.is_authenticated}"
 
         if not name or not grade or not date or not table:
             return render(request, 'core/subject_register.html', {
                 'grades': grades,
-                'error': '全ての項目を入力してください。'
+                'error': '全ての項目を入力してください。',
+                'debug_info': debug_info
             })
 
-        # ログインユーザーの情報を core_student から取得
+        student_id = request.user.username  # ユーザー名を student_id に設定
+        print(f"Assigned student_id: {student_id}")  # デバッグ用
+        debug_info += f" | 登録される student_id: {student_id}"
+
         try:
-            student = get_object_or_404(Student, student_id=request.user.username)
-            print(f"Student record found: {student.student_id}")  # デバッグ用
+            Subject.objects.create(
+                subject_name=name,
+                subject_score=int(grade),
+                date=date,
+                table=table,
+                student_id=student_id
+            )
+            return redirect('student_home')
         except Exception as e:
-            print(f"Error finding student: {e}")  # デバッグ用
+            debug_info += f" | エラー: {str(e)}"
             return render(request, 'core/subject_register.html', {
                 'grades': grades,
-                'error': '学生情報が見つかりません。管理者に連絡してください。'
+                'error': '登録中にエラーが発生しました。',
+                'debug_info': debug_info
             })
 
-        # Subject にデータを作成
-        Subject.objects.create(
-            subject_name=name,
-            subject_score=int(grade),
-            date=date,
-            table=table,
-            student_id=student.student_id  # 外部キーの値を適切に設定
-        )
-
-        return redirect('student_home')
-
-    return render(request, 'core/subject_register.html', {'grades': grades})
+    # GETリクエスト時
+    return render(request, 'core/subject_register.html', {'grades': grades, 'debug_info': debug_info})
 
 def calculate_gpa(student_id):
     # 学生の全ての成績を取得
