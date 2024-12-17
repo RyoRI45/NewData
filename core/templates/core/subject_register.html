@@ -7,22 +7,23 @@
     <nav>
         <ul style="list-style: none; display: flex; gap: 15px; margin: 0; padding: 0;">
             <li><a href="{% url 'student_home' %}" style="text-decoration: none; color: white; font-weight: bold;">ホームに戻る</a></li>
-            <li><a href="{% url 'attendance_plan' %}" style="text-decoretaion: none; color: white; font-weight: bold">出席状況</a></li>
-            <li><a href="{% url 'logout' %}" style="text-decoretaion: none; color: white; font-weight: bold">ログアウト</a></li>
+            <li><a href="{% url 'attendance_plan' %}" style="text-decoration: none; color: white; font-weight: bold;">出席状況</a></li>
+            <li><a href="{% url 'logout' %}" style="text-decoration: none; color: white; font-weight: bold;">ログアウト</a></li>
         </ul>
     </nav>
 </header>
 
-{% if debug %}
-  <div style="color: red; font-weight: bold;">{{ debug }}</div>
-{% endif %}
-
-<p>Logged-in user: {{ user.username }}</p>
-<p>Authenticated: {{ user.is_authenticated }}</p>
-
 <div style="display: flex; justify-content: center; align-items: center; height: 80vh;">
     <div style="width: 100%; max-width: 400px; text-align: center;">
         <p>ここでは、科目と成績の登録を行います</p>
+
+        <!-- デバッグ情報の表示 -->
+        {% if debug_info %}
+            <div style="margin-bottom: 15px; color: red; font-weight: bold;">
+                デバッグ情報: {{ debug_info }}
+            </div>
+        {% endif %}
+
         <form method="POST" action="">
             {% csrf_token %}
             {% if error %}
