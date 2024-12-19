@@ -102,7 +102,7 @@ def subject_register(request):
 
     debug_info = f"ユーザー: {request.user} | 認証状態: {request.user.is_authenticated}"
 
-    grades = range(1, 6)  # ここで grades を定義しておく
+    grades = range(1, 6)  # 成績の選択肢（1〜5）
 
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
@@ -110,6 +110,7 @@ def subject_register(request):
         date = request.POST.get('date')
         table = request.POST.get('table')
 
+        # 入力チェック
         if not name or not grade or not date or not table:
             return render(request, 'core/subject_register.html', {
                 'grades': grades,
@@ -117,21 +118,25 @@ def subject_register(request):
                 'debug_info': debug_info
             })
 
-        student_id = request.user.username  # ユーザー名を student_id に設定
-        print(f"Assigned student_id: {student_id}")  # デバッグ用
-        debug_info += f" | 登録される student_id: {student_id}"
-
         try:
+            # Student オブジェクトの取得または作成
+            student, created = Student.objects.get_or_create(student_name=request.user.username)
+            print(f"Student作成: {created}")  # デバッグ用
+            debug_info += f" | Student作成: {created}"
+
+            # Subject オブジェクトを作成
             Subject.objects.create(
+                student=student,  # ForeignKey に Student オブジェクトを設定
                 subject_name=name,
                 subject_score=int(grade),
                 date=date,
-                table=table,
-                student_id=student_id
+                table=table
             )
-            return redirect('student_home')
+            return redirect('student_home')  # 成功時にリダイレクト
+
         except Exception as e:
             debug_info += f" | エラー: {str(e)}"
+            print(f"エラー: {str(e)}")  # デバッグ用
             return render(request, 'core/subject_register.html', {
                 'grades': grades,
                 'error': '登録中にエラーが発生しました。',
