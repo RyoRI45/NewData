@@ -71,24 +71,30 @@ def logout_view(request):
     return redirect('login')  # ログイン画面にリダイレクト
 
 def student_home(request):
-    host = request.get_host()  # ホスト名を取得
-    print(f"Student home page accessed from host: {host}")  # ログにホスト名を出力
+    host = request.get_host()
+    print(f"Student home page accessed from host: {host}")
 
+    # セッションから student_id を取得
     student_id = request.session.get('student_id')
+    print(f"セッション内の student_id: {student_id}")
+
     if not student_id:
-        # セッションが無い場合はログインページにリダイレクト
+        print("セッションが見つからないため、ログインページにリダイレクトします")
         return redirect('login')
 
-    # 学生情報を取得
-    student = Student.objects.get(student_id=student_id)
+    try:
+        student = Student.objects.get(student_id=student_id)
+        print(f"取得した学生情報: {student}")
+    except Student.DoesNotExist:
+        print("指定された student_id に一致する学生が見つかりません")
+        return redirect('login')
 
-    # キャッシュ無効化ヘッダーを追加
-    response = render(request, 'core/student_home.html', {'student': student})
-    response['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
-    response['Pragma'] = 'no-cache'
-    response['Expires'] = '0'
-
-    return response
+    # レンダリング処理に変更
+    return render(
+        request,
+        'core/student_home.html',
+        {'student': student}  # 学生情報をテンプレートに渡す
+    )
 
 def manage_grades(request):
     host = request.get_host()  # ホスト名を取得
