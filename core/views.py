@@ -42,28 +42,42 @@ def register_student(request):
 
     return render(request, 'core/register_student.html')
 
+# def login_view(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('student_name')
+#         password = request.POST.get('password')
+#         user = authenticate(request, username=username, password=password)
+        
+#         if user is not None:
+#             login(request, user)
+            
+#             # next パラメータが存在する場合、そのURLにリダイレクト
+#             next_url = request.GET.get('next')
+#             if next_url:
+#                 return redirect(next_url)
+            
+#             # next がない場合、デフォルトのリダイレクト先へ
+#             return redirect(settings.LOGIN_REDIRECT_URL)
+#         else:
+#             return render(request, 'core/login.html', {'error': '無効なユーザー名またはパスワードです。'})
+    
+#     # GETリクエスト時、通常のログインページを表示
+#     return render(request, 'core/login.html')
+
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('student_name')
-        password = request.POST.get('password')
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        
         if user is not None:
             login(request, user)
-            
-            # next パラメータが存在する場合、そのURLにリダイレクト
-            next_url = request.GET.get('next')
-            if next_url:
-                return redirect(next_url)
-            
-            # next がない場合、デフォルトのリダイレクト先へ
-            return redirect(settings.LOGIN_REDIRECT_URL)
+            # 学生 ID をセッションに保存（仮の値を使用）
+            request.session['student_id'] = 'A001'
+            print(f"ログイン成功: セッションキー = {request.session.session_key}, student_id = {request.session.get('student_id')}")
+            return redirect('student_home')
         else:
-            return render(request, 'core/login.html', {'error': '無効なユーザー名またはパスワードです。'})
-    
-    # GETリクエスト時、通常のログインページを表示
-    return render(request, 'core/login.html')
-
+            print("ログイン失敗")
+    return render(request, 'login.html')
 
 def logout_view(request):
     logout(request)  # ユーザーをログアウト
