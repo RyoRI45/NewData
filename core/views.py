@@ -70,6 +70,32 @@ def logout_view(request):
     request.session.flush()  # セッションを完全にクリア
     return redirect('login')  # ログイン画面にリダイレクト
 
+# def student_home(request):
+#     host = request.get_host()
+#     print(f"Student home page accessed from host: {host}")
+
+#     # セッションから student_id を取得
+#     student_id = request.session.get('student_id')
+#     print(f"セッション内の student_id: {student_id}")
+
+#     if not student_id:
+#         print("セッションが見つからないため、ログインページにリダイレクトします")
+#         return redirect('login')
+
+#     try:
+#         student = Student.objects.get(student_id=student_id)
+#         print(f"取得した学生情報: {student}")
+#     except Student.DoesNotExist:
+#         print("指定された student_id に一致する学生が見つかりません")
+#         return redirect('login')
+
+#     # レンダリング処理に変更
+#     return render(
+#         request,
+#         'core/student_home.html',
+#         {'student': student}  # 学生情報をテンプレートに渡す
+#     )
+
 def student_home(request):
     host = request.get_host()
     print(f"Student home page accessed from host: {host}")
@@ -89,11 +115,12 @@ def student_home(request):
         print("指定された student_id に一致する学生が見つかりません")
         return redirect('login')
 
-    # レンダリング処理に変更
+    # 正常な場合、student_home.html をレンダリング
+    print("student_home.html をレンダリングします")
     return render(
         request,
         'core/student_home.html',
-        {'student': student}  # 学生情報をテンプレートに渡す
+        {'student': student}
     )
 
 def manage_grades(request):
