@@ -64,6 +64,7 @@ def register_student(request):
 #     # GETリクエスト時、通常のログインページを表示
 #     return render(request, 'core/login.html')
 
+# ログイン
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -77,8 +78,9 @@ def login_view(request):
             return redirect('student_home')
         else:
             print("ログイン失敗")
-    return render(request, 'login.html')
+    return render(request, 'core/login.html')
 
+# ログアウト
 def logout_view(request):
     logout(request)  # ユーザーをログアウト
     request.session.flush()  # セッションを完全にクリア

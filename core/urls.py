@@ -3,6 +3,8 @@ from django.contrib.auth.views import LogoutView
 from django.contrib.auth import views as auth_views
 from . import views
 
+app_name = 'core'  # 名前空間を設定
+
 urlpatterns = [
     path('', views.home, name='home'),
     path('login/', views.login_view, name='login'),
